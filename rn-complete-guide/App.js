@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -31,13 +32,15 @@ export default function App() {
         />
         <Button title="Add" onPress={addGoalHandler} />
       </View>
-      <ScrollView>
-        {courseGoals.map((goal, i) => (
-          <View key={i} style={styles.listItem}>
-            <Text>{goal}</Text>
+      <FlatList
+      keyExtractor={(item, index) => index.toString()}
+        data={courseGoals}
+        renderItem={itemData => (
+          <View style={styles.listItem}>
+            <Text>{itemData.item}</Text>
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   );
 }
