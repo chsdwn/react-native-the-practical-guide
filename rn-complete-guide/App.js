@@ -9,6 +9,8 @@ import {
   View
 } from "react-native";
 
+import { GoalItem } from "./components/GoalItem";
+
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
@@ -33,13 +35,9 @@ export default function App() {
         <Button title="Add" onPress={addGoalHandler} />
       </View>
       <FlatList
-      keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         data={courseGoals}
-        renderItem={itemData => (
-          <View style={styles.listItem}>
-            <Text>{itemData.item}</Text>
-          </View>
-        )}
+        renderItem={itemData => <GoalItem title={itemData.item} />}
       />
     </View>
   );
@@ -59,12 +57,5 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     padding: 10
-  },
-  listItem: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: "#ccc",
-    borderColor: "#000",
-    borderWidth: 1
   }
 });
