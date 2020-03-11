@@ -11,8 +11,11 @@ import {
 
 export const GoalItem = props => {
   return (
-    <TouchableOpacity onPress={props.onDelete} activeOpacity={0.8}>
-      <View style={styles.listItem} onTouchEnd>
+    <TouchableOpacity
+      onPress={props.onDelete.bind(this, props.goalIndex)}
+      activeOpacity={0.8}
+    >
+      <View style={styles.listItem}>
         <Text>{props.title}</Text>
       </View>
     </TouchableOpacity>
