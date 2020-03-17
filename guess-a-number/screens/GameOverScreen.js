@@ -10,7 +10,12 @@ export const GameOverScreen = props => {
       <TitleText>Gameover</TitleText>
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/success.png")}
+          // source={require("../assets/success.png")}
+          source={{
+            uri:
+              "https://cdn.pixabay.com/photo/2014/06/27/12/36/fish-378286_960_720.jpg"
+          }}
+          fadeDuration={1000}
           style={styles.image}
           resizeMode="cover"
         />
