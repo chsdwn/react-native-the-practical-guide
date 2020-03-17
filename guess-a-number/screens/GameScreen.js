@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 
 import { Card } from "../components/Card";
@@ -16,17 +16,25 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-export const GameScreen = props => {
+export const GameScreen = ({ userChoice, onGameOver }) => {
   const [currentGuess, setCurrentGuess] = useState(
-    generateRandomBetween(1, 100, props.userChoice)
+    generateRandomBetween(1, 100, userChoice)
   );
+  const [rounds, setRounds] = useState(0);
+
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
+  useEffect(() => {
+    if (currentGuess === userChoice) {
+      onGameOver(rounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
+
   const nextGuessHandler = direction => {
     if (
-      (direction === "lower" && currentGuess < props.userChoice) ||
-      (direction === "greater" && currentGuess > props.userChoice)
+      (direction === "lower" && currentGuess < userChoice) ||
+      (direction === "greater" && currentGuess > userChoice)
     ) {
       Alert.alert("Wrong", "You pressed wrong button", [
         {
@@ -48,7 +56,9 @@ export const GameScreen = props => {
       currentHigh.current,
       currentGuess
     );
+
     setCurrentGuess(nextNumber);
+    setRounds(curRounds => curRounds + 1);
   };
 
   return (
