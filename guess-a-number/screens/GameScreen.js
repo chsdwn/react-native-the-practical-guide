@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { BodyText } from "../components/BodyText";
 import { Card } from "../components/Card";
 import { NumberContainer } from "../components/NumberContainer";
 import { MainButton } from "../components/MainButton";
@@ -19,6 +20,13 @@ const generateRandomBetween = (min, max, exclude) => {
     return rndNum;
   }
 };
+
+const renderListItem = (value, round) => (
+  <View key={value} style={styles.listItem}>
+    <BodyText>#{round + 1}</BodyText>
+    <BodyText>{value}</BodyText>
+  </View>
+);
 
 export const GameScreen = ({ userChoice, onGameOver }) => {
   const initialGuess = generateRandomBetween(1, 100, userChoice);
@@ -78,13 +86,13 @@ export const GameScreen = ({ userChoice, onGameOver }) => {
           <Ionicons name="md-add" size={24} color="#fff" />
         </MainButton>
       </Card>
-      <ScrollView>
-        {pastGuesses.map(guess => (
-          <View>
-            <Text>{guess}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <View style={styles.list}>
+        <ScrollView>
+          {pastGuesses.map((guess, i) =>
+            renderListItem(guess, pastGuesses.length - i)
+          )}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -101,5 +109,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 400,
     maxWidth: "90%"
+  },
+  list: {
+    flex: 1, // Needs to be added to scroll on Android
+    width: "80%"
+  },
+  listItem: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });
