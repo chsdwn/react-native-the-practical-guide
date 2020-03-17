@@ -23,7 +23,7 @@ const generateRandomBetween = (min, max, exclude) => {
 
 const renderListItem = (value, round) => (
   <View key={value} style={styles.listItem}>
-    <BodyText>#{round + 1}</BodyText>
+    <BodyText>#{round}</BodyText>
     <BodyText>{value}</BodyText>
   </View>
 );
@@ -86,8 +86,8 @@ export const GameScreen = ({ userChoice, onGameOver }) => {
           <Ionicons name="md-add" size={24} color="#fff" />
         </MainButton>
       </Card>
-      <View style={styles.list}>
-        <ScrollView>
+      <View style={styles.listContainer}>
+        <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((guess, i) =>
             renderListItem(guess, pastGuesses.length - i)
           )}
@@ -110,9 +110,14 @@ const styles = StyleSheet.create({
     width: 400,
     maxWidth: "90%"
   },
-  list: {
+  listContainer: {
     flex: 1, // Needs to be added to scroll on Android
     width: "80%"
+  },
+  list: {
+    flexGrow: 1, // flex: 1 doesn't work on FlatList and ScrollView
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
   listItem: {
     borderColor: "#ccc",
@@ -121,6 +126,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: "#fff",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    width: "60%"
   }
 });
