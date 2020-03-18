@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
+  Dimensions,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -81,6 +82,11 @@ export const GameScreen = ({ userChoice, onGameOver }) => {
     setPastGuesses(pastGuesses => [nextNumber.toString(), ...pastGuesses]);
   };
 
+  let listContainerStyle = styles.listContainer;
+  if (Dimensions.get("window").width < 350) {
+    listContainerStyle = styles.listContainerBig;
+  }
+
   return (
     <View style={styles.screen}>
       <Text style={DefaultStyles.bodyText}>Opponent's guess</Text>
@@ -93,7 +99,7 @@ export const GameScreen = ({ userChoice, onGameOver }) => {
           <Ionicons name="md-add" size={24} color="#fff" />
         </MainButton>
       </Card>
-      <View style={styles.listContainer}>
+      <View style={listContainerStyle}>
         {/* <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((guess, i) =>
             renderListItem(guess, pastGuesses.length - i)
@@ -119,12 +125,16 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 20,
+    marginTop: Dimensions.get("window").height > 600 ? 20 : 5,
     width: 400,
     maxWidth: "90%"
   },
   listContainer: {
     flex: 1, // Needs to be added to scroll on Android
+    width: "80%"
+  },
+  listContainerBig: {
+    flex: 1,
     width: "60%"
   },
   list: {
