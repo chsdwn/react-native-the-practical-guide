@@ -4,8 +4,9 @@ import {
   Button,
   Dimensions,
   Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View
 } from "react-native";
@@ -65,50 +66,58 @@ export const StartGameScreen = props => {
   }
 
   return (
-    <TouchableWithoutFeedback
-      // Closes keyboard when user touch any blank area.
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <View style={styles.screen}>
-        <TitleText style={styles.title}>Start a New Game!</TitleText>
-        <Card style={styles.inputContainer}>
-          <BodyText>Select a Number</BodyText>
-          <Input
-            style={styles.input}
-            blurOnSubmit
-            autoCapitalize="none"
-            autoCorrect={false}
-            maxLength={2}
-            // Android
-            value={enteredValue}
-            onChangeText={numberInputHandler}
-            // Works on iOS
-            keyboardType="number-pad"
-          />
-          <View style={styles.buttonContainer}>
-            <View style={styles.button}>
-              <Button
-                style={styles.button}
-                color={Colors.accent}
-                title="Reset"
-                onPress={resetInputHandler}
+    <ScrollView>
+      <KeyboardAvoidingView
+        behavior="padding" // Works good on Android
+        // behavior="position" // Works good on iOS
+        keyboardVerticalOffset={30}
+      >
+        <TouchableWithoutFeedback
+          // Closes keyboard when user touch any blank area.
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
+        >
+          <View style={styles.screen}>
+            <TitleText style={styles.title}>Start a New Game!</TitleText>
+            <Card style={styles.inputContainer}>
+              <BodyText>Select a Number</BodyText>
+              <Input
+                style={styles.input}
+                blurOnSubmit
+                autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={2}
+                // Android
+                value={enteredValue}
+                onChangeText={numberInputHandler}
+                // Works on iOS
+                keyboardType="number-pad"
               />
-            </View>
-            <View style={styles.button}>
-              <Button
-                style={styles.button}
-                color={Colors.primary}
-                title="Confirm"
-                onPress={confirmInputHandler}
-              />
-            </View>
+              <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                  <Button
+                    style={styles.button}
+                    color={Colors.accent}
+                    title="Reset"
+                    onPress={resetInputHandler}
+                  />
+                </View>
+                <View style={styles.button}>
+                  <Button
+                    style={styles.button}
+                    color={Colors.primary}
+                    title="Confirm"
+                    onPress={confirmInputHandler}
+                  />
+                </View>
+              </View>
+            </Card>
+            {confirmedOutput}
           </View>
-        </Card>
-        {confirmedOutput}
-      </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
