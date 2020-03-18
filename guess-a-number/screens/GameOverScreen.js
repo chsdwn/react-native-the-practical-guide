@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -15,11 +15,40 @@ import { MainButton } from "../components/MainButton";
 import Colors from "../constants/colors";
 
 export const GameOverScreen = props => {
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+    Dimensions.get("window").width
+  );
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get("window").height
+  );
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceWidth(Dimensions.get("window").width);
+      setAvailableDeviceHeight(Dimensions.get("window").height);
+    };
+
+    Dimensions.addEventListener("change", updateLayout);
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    };
+  });
+
   return (
     <ScrollView>
       <View style={styles.screen}>
         <TitleText>Gameover</TitleText>
-        <View style={styles.imageContainer}>
+        <View
+          style={{
+            ...styles.imageContainer,
+            ...{
+              width: availableDeviceWidth * 0.7,
+              height: availableDeviceWidth * 0.7,
+              borderRadius: availableDeviceWidth / 2,
+              marginVertical: availableDeviceHeight / 30
+            }
+          }}
+        >
           <Image
             source={require("../assets/success.png")}
             fadeDuration={1000}
@@ -27,8 +56,18 @@ export const GameOverScreen = props => {
             resizeMode="cover"
           />
         </View>
-        <View style={styles.resultContainer}>
-          <BodyText style={styles.resultText}>
+        <View
+          style={{
+            ...styles.resultContainer,
+            marginVertical: availableDeviceHeight / 60
+          }}
+        >
+          <BodyText
+            style={{
+              ...styles.resultText,
+              fontSize: availableDeviceHeight < 400 ? 16 : 20
+            }}
+          >
             Your phone needed{" "}
             <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to
             guess the number{" "}
@@ -49,25 +88,19 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   imageContainer: {
-    width: Dimensions.get("window").width * 0.7,
-    height: Dimensions.get("window").width * 0.7,
-    borderRadius: (Dimensions.get("window").width * 0.7) / 2,
     borderWidth: 3,
     borderColor: "#000",
-    overflow: "hidden",
-    marginVertical: Dimensions.get("window").height / 30
+    overflow: "hidden"
   },
   image: {
     width: "100%",
     height: "100%"
   },
   resultContainer: {
-    marginHorizontal: 30,
-    marginVertical: Dimensions.get("window").height / 60
+    marginHorizontal: 30
   },
   resultText: {
-    textAlign: "center",
-    fontSize: Dimensions.get("window").height < 400 ? 16 : 20
+    textAlign: "center"
   },
   highlight: {
     color: Colors.primary,
