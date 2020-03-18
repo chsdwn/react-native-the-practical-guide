@@ -143,10 +143,10 @@ export const GameScreen = ({ userChoice, onGameOver }) => {
       <Text style={DefaultStyles.bodyText}>Opponent's guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card
-        style={[
+        style={{
           ...styles.buttonContainer,
-          { marginTop: availableDeviceHeight > 600 ? 20 : 5 }
-        ]}
+          marginTop: availableDeviceHeight > 600 ? 20 : 5
+        }}
       >
         <MainButton onPress={() => nextGuessHandler("lower")}>
           <Ionicons name="md-remove" size={24} color="#fff" />
