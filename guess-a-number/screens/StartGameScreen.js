@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Alert,
   Button,
+  Dimensions,
   Keyboard,
   StyleSheet,
   Text,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   button: {
-    width: "40%"
+    width: Dimensions.get("window").width / 4
   },
   summaryContainer: {
     marginTop: 20,
