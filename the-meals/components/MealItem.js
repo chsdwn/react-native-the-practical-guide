@@ -4,8 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  ImageBackgroundBase
+  View
 } from "react-native";
 
 export const MealItem = ({
