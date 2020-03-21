@@ -4,7 +4,7 @@ import { enableScreens } from "react-native-screens";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
-import { MealsNavigator } from "./navigation/MealsNavigator";
+import { MealsFavTabNavigator } from "./navigation/MealsNavigator";
 
 // Improves performance
 enableScreens();
@@ -28,5 +28,5 @@ export default function App() {
     );
   }
 
-  return <MealsNavigator />;
+  return <MealsFavTabNavigator />;
 }
