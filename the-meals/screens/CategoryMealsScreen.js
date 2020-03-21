@@ -10,6 +10,12 @@ export const CategoryMealsScreen = props => {
     <View style={styles.screen}>
       <Text>Category Meals</Text>
       <Button title="Go to Meal Detail" onPress={navigateToMealDetailScreen} />
+      <Button
+        title="Go Back"
+        onPress={() => {
+          props.navigation.goBack();
+        }}
+      />
     </View>
   );
 };
