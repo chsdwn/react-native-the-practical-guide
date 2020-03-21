@@ -2,13 +2,19 @@ import React from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 
 import { CATEGORIES, MEALS } from "../data/dummy-data";
+import { MealItem } from "../components/MealItem";
 
 export const CategoryMealsScreen = props => {
   const renderMealItem = itemData => {
     return (
-      <View>
-        <Text>{itemData.item.title}</Text>
-      </View>
+      <MealItem
+        title={itemData.item.title}
+        duration={itemData.item.duration}
+        complexity={itemData.item.complexity}
+        affordability={itemData.item.affordability}
+        image={itemData.item.imageUrl}
+        onSelectMeal={() => {}}
+      />
     );
   };
 
@@ -21,7 +27,11 @@ export const CategoryMealsScreen = props => {
 
   return (
     <View style={styles.screen}>
-      <FlatList data={displayedMeals} renderItem={renderMealItem} />
+      <FlatList
+        data={displayedMeals}
+        renderItem={renderMealItem}
+        style={{ width: "100%", padding: 15 }}
+      />
     </View>
   );
 };
