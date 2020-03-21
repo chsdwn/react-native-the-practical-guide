@@ -1,5 +1,5 @@
 export class Meal {
-  contstuctor(
+  constructor(
     id,
     categoryIds,
     title,
