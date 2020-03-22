@@ -86,13 +86,30 @@ const MealsFavTabNavigator =
         }
       });
 
-const FiltersNavigator = createStackNavigator({
-  Filters: FiltersScreen
-});
+const FiltersNavigator = createStackNavigator(
+  {
+    Filters: FiltersScreen
+  },
+  {
+    navigationOptions: { drawerLabel: "Filters" },
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
 
 export const MainNavigator = createAppContainer(
-  createDrawerNavigator({
-    MealsFavs: MealsFavTabNavigator,
-    Filters: FiltersNavigator
-  })
+  createDrawerNavigator(
+    {
+      MealsFavs: {
+        screen: MealsFavTabNavigator,
+        navigationOptions: { drawerLabel: "Meals" }
+      },
+      Filters: FiltersNavigator
+    },
+    {
+      contentOptions: {
+        activeTintColor: Colors.accentColor,
+        labelStyle: { fontFamily: "open-sans-bold" }
+      }
+    }
+  )
 );
