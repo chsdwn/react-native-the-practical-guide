@@ -15,7 +15,10 @@ export const MealList = ({ listData, navigation }) => {
         onSelectMeal={() => {
           navigation.navigate({
             routeName: "MealDetail",
-            params: { mealId: itemData.item.id }
+            params: {
+              mealId: itemData.item.id,
+              mealTitle: itemData.item.title
+            }
           });
         }}
       />
