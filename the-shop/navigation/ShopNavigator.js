@@ -18,7 +18,14 @@ export const ProductsNavigator = createAppContainer(
         headerStyle: {
           backgroundColor: Platform.OS === "android" ? Colors.primary : ""
         },
-        headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primary
+        headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primary,
+        headerTitleStyle: {
+          fontFamily: "open-sans-bold"
+        },
+        // Effects iOS title
+        headerBackTitleStyle: {
+          fontFamily: "open-sans-bold"
+        }
       }
     }
   )
