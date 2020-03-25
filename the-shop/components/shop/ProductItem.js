@@ -9,13 +9,9 @@ import {
   View
 } from "react-native";
 
-export const ProductItem = ({
-  children,
-  image,
-  title,
-  price,
-  onSelect
-}) => {
+import { Card } from "../UI/Card";
+
+export const ProductItem = ({ children, image, title, price, onSelect }) => {
   let TouchableComponent = TouchableOpacity;
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -23,32 +19,28 @@ export const ProductItem = ({
   }
 
   return (
-    <View style={styles.product}>
-      <TouchableComponent onPress={onSelect}>
-        <View>
-          <Image style={styles.image} source={{ uri: image }} />
-          <View style={styles.details}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.price}>${price.toFixed(2)}</Text>
+    <Card style={styles.product}>
+      <View>
+        <TouchableComponent onPress={onSelect}>
+          <View>
+            <Image style={styles.image} source={{ uri: image }} />
+            <View style={styles.details}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.price}>${price.toFixed(2)}</Text>
+            </View>
+            <View style={styles.buttonContainer}>{children}</View>
           </View>
-          <View style={styles.buttonContainer}>
-            {children}
-          </View>
-        </View>
-      </TouchableComponent>
-    </View>
+        </TouchableComponent>
+      </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    borderRadius: 5,
-    backgroundColor: "#fff",
     height: 300,
     margin: 20,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#ddd"
+    overflow: "hidden"
   },
   image: {
     width: "100%",
