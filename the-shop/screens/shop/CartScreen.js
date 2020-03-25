@@ -34,7 +34,9 @@ export const CartScreen = props => {
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
           Total:{" "}
-          <Text style={styles.amount}>${cart.totalAmount.toFixed(2)}</Text>
+          <Text style={styles.amount}>
+            ${Math.round((cart.totalAmount.toFixed(2) * 100) / 100)}
+          </Text>
         </Text>
         <Button
           color={Colors.accent}
@@ -62,7 +64,7 @@ export const CartScreen = props => {
 
 CartScreen.navigationOptions = {
   headerTitle: "Your Cart"
-}
+};
 
 const styles = StyleSheet.create({
   screen: {

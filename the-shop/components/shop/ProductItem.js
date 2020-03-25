@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: "center",
-    height: "15%",
+    height: "17%",
     padding: 10
   },
   title: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans"
   },
   buttonContainer: {
-    height: "25%",
+    height: "23%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
