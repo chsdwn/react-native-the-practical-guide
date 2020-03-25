@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Platform, StyleSheet, View } from "react-native";
+import { Button, FlatList, Platform, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
@@ -8,10 +8,19 @@ import { addToCart } from "../../store/actions/cart";
 import { ProductItem } from "../../components/shop/ProductItem";
 import { CustomHeaderButton } from "../../components/UI/HeaderButton";
 
+import Colors from "../../constants/Colors";
+
 export const ProductsOverviewScreen = props => {
   const dispatch = useDispatch();
 
   const products = useSelector(state => state.products.availableProducts);
+
+  const selectItemHandler = (id, title) => {
+    props.navigation.navigate("ProductDetail", {
+      productId: id,
+      productTitle: title
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -22,16 +31,23 @@ export const ProductsOverviewScreen = props => {
             title={itemData.item.title}
             price={itemData.item.price}
             image={itemData.item.imageUrl}
-            onViewDetail={() =>
-              props.navigation.navigate("ProductDetail", {
-                productId: itemData.item.id,
-                productTitle: itemData.item.title
-              })
+            onSelect={() =>
+              selectItemHandler(itemData.item.id, itemData.item.title)
             }
-            onAddToCart={() => {
-              dispatch(addToCart(itemData.item));
-            }}
-          />
+          >
+            <Button
+              color={Colors.primary}
+              title="View Details"
+              onPress={() =>
+                selectItemHandler(itemData.item.id, itemData.item.title)
+              }
+            />
+            <Button
+              color={Colors.primary}
+              title="To Cart"
+              onPress={() => dispatch(addToCart(itemData.item))}
+            />
+          </ProductItem>
         )}
       />
     </View>
