@@ -1,6 +1,10 @@
+import Product from "../../models/product";
+
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+
+export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const createProduct = (title, description, imageURL, price) => {
   return async dispatch => {
@@ -39,5 +43,30 @@ export const updateProduct = (id, title, description, imageURL) => {
     type: UPDATE_PRODUCT,
     pid: id,
     productData: { title, description, imageURL }
+  };
+};
+
+export const fetchProducts = () => {
+  return async dispatch => {
+    const response = await fetch(
+      "https://the-shop-dde6a.firebaseio.com/products.json"
+    );
+    const responseData = await response.json();
+
+    const loadedProducts = [];
+    for (const key in responseData) {
+      loadedProducts.push(
+        new Product(
+          key,
+          "u1",
+          responseData[key].title,
+          responseData[key].imageURL,
+          responseData[key].description,
+          responseData[key].price
+        )
+      );
+    }
+
+    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
   };
 };
