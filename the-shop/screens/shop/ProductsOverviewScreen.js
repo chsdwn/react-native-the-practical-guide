@@ -1,5 +1,13 @@
-import React, { useEffect } from "react";
-import { Button, FlatList, Platform, StyleSheet, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
@@ -12,13 +20,28 @@ import { CustomHeaderButton } from "../../components/UI/HeaderButton";
 import Colors from "../../constants/Colors";
 
 export const ProductsOverviewScreen = props => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState();
   const dispatch = useDispatch();
 
   const products = useSelector(state => state.products.availableProducts);
 
+  const loadProducts = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await dispatch(fetchProducts());
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch, setError, setIsLoading]);
+
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    loadProducts();
+  }, [loadProducts]);
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("ProductDetail", {
@@ -26,6 +49,35 @@ export const ProductsOverviewScreen = props => {
       productTitle: title
     });
   };
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>{error}</Text>
+        <Button
+          color={Colors.primary}
+          title="Try again"
+          onPress={loadProducts}
+        />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>No products found.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -86,5 +138,10 @@ ProductsOverviewScreen.navigationOptions = navData => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#eee"
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
