@@ -35,14 +35,36 @@ export const createProduct = (title, description, imageURL, price) => {
 };
 
 export const deleteProduct = productId => {
-  return { type: DELETE_PRODUCT, pid: productId };
+  return async dispatch => {
+    await fetch(
+      `https://the-shop-dde6a.firebaseio.com/products/${productId}.json`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    dispatch({
+      type: DELETE_PRODUCT,
+      pid: productId
+    });
+  };
 };
 
 export const updateProduct = (id, title, description, imageURL) => {
-  return {
-    type: UPDATE_PRODUCT,
-    pid: id,
-    productData: { title, description, imageURL }
+  return async dispatch => {
+    await fetch(`https://the-shop-dde6a.firebaseio.com/products/${id}.json`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ title, description, imageURL })
+    });
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      pid: id,
+      productData: { title, description, imageURL }
+    });
   };
 };
 
