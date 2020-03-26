@@ -14,6 +14,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { createProduct, updateProduct } from "../../store/actions/products";
 
 import { CustomHeaderButton } from "../../components/UI/HeaderButton";
+import { Input } from "../../components/UI/Input";
 
 const FORM_INPUT_UPDATE = "UPDATE";
 
@@ -127,48 +128,38 @@ export const EditProductScreen = props => {
   return (
     <ScrollView>
       <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={text => textChangeHandler("title", text)}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            autoCorrect
+        <Input
+          label="Title"
+          errorText="Title cannot be empty"
+          keyboardType="default"
+          autoCapitalize="sentences"
+          autoCorrect
+          returnKeyType="next"
+        />
+        <Input
+          label="Image Url"
+          errorText="Enter a valid image url"
+          keyboardType="default"
+          returnKeyType="next"
+        />
+        {!productId && (
+          <Input
+            label="Price"
+            errorText="Price cannot be empty"
+            keyboardType="decimal-pad"
             returnKeyType="next"
           />
-          {!formState.inputValidities.title && (
-            <Text>Title cannot be empty</Text>
-          )}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Image URL</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.imageURL}
-            onChangeText={text => textChangeHandler("imageURL", text)}
-          />
-        </View>
-        {!productId && (
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.price}
-              onChangeText={text => textChangeHandler("price", text)}
-              keyboardType="decimal-pad"
-            />
-          </View>
         )}
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.description}
-            onChangeText={text => textChangeHandler("description", text)}
-          />
-        </View>
+        <Input
+          label="Description"
+          errorText="Description cannot be empty"
+          keyboardType="default"
+          autoCapitalize="sentences"
+          autoCorrect
+          multiline
+          // Doesn't work on iOS
+          numberOfLines={3}
+        />
       </View>
     </ScrollView>
   );
