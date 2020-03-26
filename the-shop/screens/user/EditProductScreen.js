@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useReducer } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
-  TextInput,
   View
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,62 +123,68 @@ export const EditProductScreen = props => {
   );
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <Input
-          id="title"
-          label="Title"
-          errorText="Title cannot be empty"
-          keyboardType="default"
-          autoCapitalize="sentences"
-          autoCorrect
-          returnKeyType="next"
-          onInputChange={inputChangeHandler}
-          initialValue={product ? product.title : ""}
-          initiallyValid={!!product}
-          required
-        />
-        <Input
-          id="imageURL"
-          label="Image Url"
-          errorText="Enter a valid image url"
-          keyboardType="default"
-          returnKeyType="next"
-          onInputChange={inputChangeHandler}
-          initialValue={product ? product.imageUrl : ""}
-          initiallyValid={!!product}
-          required
-        />
-        {!productId && (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+    >
+      <ScrollView>
+        <View style={styles.form}>
           <Input
-            id="price"
-            label="Price"
-            errorText="Price cannot be empty"
-            keyboardType="decimal-pad"
+            id="title"
+            label="Title"
+            errorText="Title cannot be empty"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
             returnKeyType="next"
             onInputChange={inputChangeHandler}
+            initialValue={product ? product.title : ""}
+            initiallyValid={!!product}
             required
-            min={0.1}
           />
-        )}
-        <Input
-          id="description"
-          label="Description"
-          errorText="Description cannot be empty"
-          keyboardType="default"
-          autoCapitalize="sentences"
-          autoCorrect
-          multiline
-          // Doesn't work on iOS
-          numberOfLines={3}
-          onInputChange={inputChangeHandler}
-          initialValue={product ? product.description : ""}
-          initiallyValid={!!product}
-          required
-          minLength={5}
-        />
-      </View>
-    </ScrollView>
+          <Input
+            id="imageURL"
+            label="Image Url"
+            errorText="Enter a valid image url"
+            keyboardType="default"
+            returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            initialValue={product ? product.imageUrl : ""}
+            initiallyValid={!!product}
+            required
+          />
+          {!productId && (
+            <Input
+              id="price"
+              label="Price"
+              errorText="Price cannot be empty"
+              keyboardType="decimal-pad"
+              returnKeyType="next"
+              onInputChange={inputChangeHandler}
+              required
+              min={0.1}
+            />
+          )}
+          <Input
+            id="description"
+            label="Description"
+            errorText="Description cannot be empty"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            multiline
+            // Doesn't work on iOS
+            numberOfLines={3}
+            onInputChange={inputChangeHandler}
+            initialValue={product ? product.description : ""}
+            initiallyValid={!!product}
+            required
+            minLength={5}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
