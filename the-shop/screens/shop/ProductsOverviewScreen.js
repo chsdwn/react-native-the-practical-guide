@@ -20,27 +20,30 @@ import { CustomHeaderButton } from "../../components/UI/HeaderButton";
 import Colors from "../../constants/Colors";
 
 export const ProductsOverviewScreen = props => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+
   const dispatch = useDispatch();
 
   const products = useSelector(state => state.products.availableProducts);
 
   const loadProducts = useCallback(async () => {
-    setIsLoading(true);
     setError(null);
+    setIsRefreshing(true);
 
     try {
       await dispatch(fetchProducts());
     } catch (error) {
       setError(error.message);
     } finally {
-      setIsLoading(false);
+      setIsRefreshing(false);
     }
-  }, [dispatch, setError, setIsLoading]);
+  }, [dispatch, setError, setIsRefreshing]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => setIsLoading(false));
   }, [loadProducts]);
 
   useEffect(() => {
@@ -93,6 +96,8 @@ export const ProductsOverviewScreen = props => {
   return (
     <View style={styles.container}>
       <FlatList
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
         data={products}
         renderItem={itemData => (
           <ProductItem
