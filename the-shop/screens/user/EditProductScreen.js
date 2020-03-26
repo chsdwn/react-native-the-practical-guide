@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
@@ -29,7 +30,14 @@ export const EditProductScreen = props => {
     product ? product.description : ""
   );
 
+  const [titleIsValid, setTitleIsValid] = useState(false);
+
   const submitHandler = useCallback(() => {
+    if (!titleIsValid) {
+      Alert.alert("Wrong input!", "Check your form", [{ text: "Okay" }]);
+      return;
+    }
+
     if (product) {
       dispatch(updateProduct(productId, title, description, imageURL));
     } else {
@@ -43,6 +51,16 @@ export const EditProductScreen = props => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
+  const titleChangeHandler = text => {
+    if (text.trim().length === 0) {
+      setTitleIsValid(false);
+    } else {
+      setTitleIsValid(true);
+    }
+
+    setTitle(text);
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -51,12 +69,13 @@ export const EditProductScreen = props => {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={text => setTitle(text)}
+            onChangeText={titleChangeHandler}
             keyboardType="default"
             autoCapitalize="sentences"
             autoCorrect
             returnKeyType="next"
           />
+          {!titleIsValid && <Text>Title cannot be empty</Text>}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image URL</Text>
