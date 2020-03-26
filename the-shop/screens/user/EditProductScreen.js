@@ -111,46 +111,59 @@ export const EditProductScreen = props => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
-  const textChangeHandler = (inputIdentifier, text) => {
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
-    }
-
-    dispatchFormState({
-      type: FORM_INPUT_UPDATE,
-      value: text,
-      isValid,
-      input: inputIdentifier
-    });
-  };
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier
+      });
+    },
+    [dispatchFormState]
+  );
 
   return (
     <ScrollView>
       <View style={styles.form}>
         <Input
+          id="title"
           label="Title"
           errorText="Title cannot be empty"
           keyboardType="default"
           autoCapitalize="sentences"
           autoCorrect
           returnKeyType="next"
+          onInputChange={inputChangeHandler}
+          initialValue={product ? product.title : ""}
+          initiallyValid={!!product}
+          required
         />
         <Input
+          id="imageURL"
           label="Image Url"
           errorText="Enter a valid image url"
           keyboardType="default"
           returnKeyType="next"
+          onInputChange={inputChangeHandler}
+          initialValue={product ? product.imageUrl : ""}
+          initiallyValid={!!product}
+          required
         />
         {!productId && (
           <Input
+            id="price"
             label="Price"
             errorText="Price cannot be empty"
             keyboardType="decimal-pad"
             returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            required
+            min={0.1}
           />
         )}
         <Input
+          id="description"
           label="Description"
           errorText="Description cannot be empty"
           keyboardType="default"
@@ -159,6 +172,11 @@ export const EditProductScreen = props => {
           multiline
           // Doesn't work on iOS
           numberOfLines={3}
+          onInputChange={inputChangeHandler}
+          initialValue={product ? product.description : ""}
+          initiallyValid={!!product}
+          required
+          minLength={5}
         />
       </View>
     </ScrollView>

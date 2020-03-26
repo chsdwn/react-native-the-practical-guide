@@ -1,11 +1,22 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 
+const INPUT_BLUR = "INPUT_BLUR";
 const INPUT_CHANGE = "INPUT_CHANGE";
 
 const inputReducer = (state, action) => {
   switch (action.type) {
+    case INPUT_BLUR:
+      return {
+        ...state,
+        touched: true
+      };
     case INPUT_CHANGE:
+      return {
+        ...state,
+        value: action.value,
+        isValid: action.isValid
+      };
   }
 };
 
@@ -15,6 +26,14 @@ export const Input = props => {
     isValid: props.initiallyValid,
     touched: false
   });
+
+  const { onInputChange, id } = props;
+
+  useEffect(() => {
+    if (inputState.touched) {
+      props.onInputChange(id, inputState.value, inputState.isValid);
+    }
+  }, [inputState, onInputChange, id]);
 
   const textChangeHandler = text => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -40,16 +59,21 @@ export const Input = props => {
     dispatch({ type: INPUT_CHANGE, value: text, isValid });
   };
 
+  const lostFocusHandler = () => {
+    dispatch({ type: INPUT_BLUR });
+  };
+
   return (
     <View style={styles.formControl}>
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         {...props}
         style={styles.input}
-        value={formState.inputValues.title}
+        value={inputState.value}
         onChangeText={textChangeHandler}
+        onBlur={lostFocusHandler}
       />
-      {!formState.inputValidities.title && <Text>{props.errorText}</Text>}
+      {!inputState.isValid && <Text>{props.errorText}</Text>}
     </View>
   );
 };
