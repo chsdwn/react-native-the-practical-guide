@@ -4,6 +4,7 @@ import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
 
+import { StartupScreen } from "../screens/StartupScreen";
 import { CartScreen } from "../screens/shop/CartScreen";
 import { OrdersScreen } from "../screens/shop/OrdersScreen";
 import { ProductDetailScreen } from "../screens/shop/ProductDetailScreen";
@@ -108,6 +109,7 @@ const AuthNavigator = createStackNavigator(
 
 export const MainNavigator = createAppContainer(
   createSwitchNavigator({
+    Startup: StartupScreen,
     Auth: AuthNavigator,
     Shop: ShopNavigator
   })
