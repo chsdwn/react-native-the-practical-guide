@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native";
 import { FIREBASE_APIKEY } from "../../constants/ApiKey";
 
 export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
 
 export const authenticate = (userId, token) => {
   return { type: AUTHENTICATE, userId, token };
@@ -62,6 +63,10 @@ export const login = (email, password) => {
       expirationDate
     );
   };
+};
+
+export const logout = () => {
+  return { type: LOGOUT };
 };
 
 export const signup = (email, password) => {
