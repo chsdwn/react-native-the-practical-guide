@@ -5,11 +5,13 @@ export const ADD_ORDER = "ADD_ORDER";
 export const SET_ORDERS = "SET_ORDERS";
 
 export const addOrder = (cartItems, totalAmount) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const date = new Date().toISOString();
 
     const response = await fetch(
-      `https://the-shop-dde6a.firebaseio.com/orders/${"u1"}.json`,
+      `https://the-shop-dde6a.firebaseio.com/orders/${"u1"}.json?` +
+        `auth=${token}`,
       {
         method: "POST",
         headers: {

@@ -7,9 +7,10 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const createProduct = (title, description, imageURL, price) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      "https://the-shop-dde6a.firebaseio.com/products.json",
+      `https://the-shop-dde6a.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -35,9 +36,11 @@ export const createProduct = (title, description, imageURL, price) => {
 };
 
 export const deleteProduct = productId => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://the-shop-dde6a.firebaseio.com/products/${productId}.json`,
+      `https://the-shop-dde6a.firebaseio.com/products/${productId}.json` +
+        `auth=${token}`,
       {
         method: "DELETE"
       }
@@ -55,9 +58,11 @@ export const deleteProduct = productId => {
 };
 
 export const updateProduct = (id, title, description, imageURL) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://the-shop-dde6a.firebaseio.com/products/${id}.json`,
+      `https://the-shop-dde6a.firebaseio.com/products/${id}.json?` +
+        `auth=${token}`,
       {
         method: "PATCH",
         headers: {
