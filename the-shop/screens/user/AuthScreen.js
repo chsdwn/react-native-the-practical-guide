@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useReducer } from "react";
 import {
   Button,
   KeyboardAvoidingView,
@@ -6,14 +6,79 @@ import {
   StyleSheet,
   View
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch } from "react-redux";
+
+import { signup } from "../../store/actions/auth";
 
 import { Card } from "../../components/UI/Card";
 import { Input } from "../../components/UI/Input";
 
+import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../../constants/Colors";
 
+export const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value
+    };
+
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid
+    };
+
+    let updatedFormIsValid = true;
+
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+
+    return {
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid
+    };
+  }
+
+  return state;
+};
+
 export const AuthScreen = props => {
+  const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      email: "",
+      password: ""
+    },
+    inputValidities: {
+      email: false,
+      password: false
+    },
+    formIsValid: false
+  });
+
+  const signupHandler = () => {
+    dispatch(
+      signup(formState.inputValues.email, formState.inputValues.password)
+    );
+  };
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier
+      });
+    },
+    [dispatchFormState]
+  );
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -30,8 +95,8 @@ export const AuthScreen = props => {
               required
               email
               autoCapitalize="none"
-              errorMessage="Enter a valid email address"
-              onInputChange={() => {}}
+              errorText="Enter a valid email address"
+              onInputChange={inputChangeHandler}
               initialValue=""
             />
             <Input
@@ -42,12 +107,16 @@ export const AuthScreen = props => {
               minLength={5}
               secureTextEntry
               autoCapitalize="none"
-              errorMessage="Password need to be at least 5 characters"
-              onInputChange={() => {}}
+              errorText="Password need to be at least 5 characters"
+              onInputChange={inputChangeHandler}
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              <Button title="Login" color={Colors.primary} onPress={() => {}} />
+              <Button
+                title="Login"
+                color={Colors.primary}
+                onPress={signupHandler}
+              />
             </View>
             <View style={styles.buttonContainer}>
               <Button
