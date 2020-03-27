@@ -9,7 +9,7 @@ import * as Font from "expo-font";
 import cartReducer from "./store/reducers/cart";
 import ordersReducer from "./store/reducers/orders";
 import productsReducer from "./store/reducers/products";
-import { ShopNavigator } from "./navigation/ShopNavigator";
+import { MainNavigator } from "./navigation/ShopNavigator";
 
 const rootReducer = combineReducers({
   cart: cartReducer,
@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <MainNavigator />
     </Provider>
   );
 }

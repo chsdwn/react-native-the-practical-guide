@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
 
@@ -8,6 +8,7 @@ import { CartScreen } from "../screens/shop/CartScreen";
 import { OrdersScreen } from "../screens/shop/OrdersScreen";
 import { ProductDetailScreen } from "../screens/shop/ProductDetailScreen";
 import { ProductsOverviewScreen } from "../screens/shop/ProductsOverviewScreen";
+import { AuthScreen } from "../screens/user/AuthScreen";
 import { EditProductScreen } from "../screens/user/EditProductScreen";
 import { UserProductsScreen } from "../screens/user/UserProductsScreen";
 
@@ -28,7 +29,7 @@ const defaultNavOptions = {
   }
 };
 
-export const ProductsNavigator = createStackNavigator(
+const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
     ProductDetail: ProductDetailScreen,
@@ -48,7 +49,7 @@ export const ProductsNavigator = createStackNavigator(
   }
 );
 
-export const OrdersNavigator = createStackNavigator(
+const OrdersNavigator = createStackNavigator(
   {
     Orders: OrdersScreen
   },
@@ -66,7 +67,7 @@ export const OrdersNavigator = createStackNavigator(
   }
 );
 
-export const AdminNavigator = createStackNavigator(
+const AdminNavigator = createStackNavigator(
   {
     UserProducts: UserProductsScreen,
     EditProduct: EditProductScreen
@@ -85,17 +86,29 @@ export const AdminNavigator = createStackNavigator(
   }
 );
 
-export const ShopNavigator = createAppContainer(
-  createDrawerNavigator(
-    {
-      Products: ProductsNavigator,
-      Orders: OrdersNavigator,
-      Admin: AdminNavigator
-    },
-    {
-      contentOptions: {
-        activeTintColor: Colors.primary
-      }
+const ShopNavigator = createDrawerNavigator(
+  {
+    Products: ProductsNavigator,
+    Orders: OrdersNavigator,
+    Admin: AdminNavigator
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primary
     }
-  )
+  }
+);
+
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: AuthScreen
+  },
+  { defaultNavigationOptions: defaultNavOptions }
+);
+
+export const MainNavigator = createAppContainer(
+  createSwitchNavigator({
+    Auth: AuthNavigator,
+    Shop: ShopNavigator
+  })
 );
