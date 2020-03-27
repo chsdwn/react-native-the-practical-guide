@@ -9,6 +9,8 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 export const createProduct = (title, description, imageURL, price) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
+
     const response = await fetch(
       `https://the-shop-dde6a.firebaseio.com/products.json?auth=${token}`,
       {
@@ -16,7 +18,13 @@ export const createProduct = (title, description, imageURL, price) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ title, description, imageURL, price })
+        body: JSON.stringify({
+          title,
+          description,
+          imageURL,
+          price,
+          ownerId: userId
+        })
       }
     );
 
@@ -29,7 +37,8 @@ export const createProduct = (title, description, imageURL, price) => {
         title,
         description,
         imageURL,
-        price
+        price,
+        ownerId: userId
       }
     });
   };
@@ -85,7 +94,9 @@ export const updateProduct = (id, title, description, imageURL) => {
 };
 
 export const fetchProducts = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+
     try {
       const response = await fetch(
         "https://the-shop-dde6a.firebaseio.com/products.json"
@@ -102,7 +113,7 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            "u1",
+            responseData[key].ownerId,
             responseData[key].title,
             responseData[key].imageURL,
             responseData[key].description,
@@ -111,7 +122,13 @@ export const fetchProducts = () => {
         );
       }
 
-      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      dispatch({
+        type: SET_PRODUCTS,
+        products: loadedProducts,
+        userProducts: loadedProducts.filter(
+          product => product.ownerId === userId
+        )
+      });
     } catch (error) {
       throw error;
     }
