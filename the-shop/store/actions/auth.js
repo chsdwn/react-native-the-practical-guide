@@ -23,7 +23,25 @@ export const login = (email, password) => {
     );
 
     if (!response.ok) {
-      throw new Error("Something went wrong");
+      const errorResponseData = await response.json();
+      const errorId = errorResponseData.error.message;
+
+      let message;
+
+      switch (errorId) {
+        case "EMAIL_NOT_FOUND":
+          message = "This email not registered";
+          throw new Error(message);
+        case "INVALID_PASSWORD":
+          message = "Your email or password wrong";
+          throw new Error(message);
+        case "USER_DISABLED":
+          message = "This user is disabled";
+          throw new Error(message);
+        default:
+          message = "Something went wrong";
+          throw new Error(message);
+      }
     }
 
     const responseData = await response.json();
@@ -51,7 +69,25 @@ export const signup = (email, password) => {
     );
 
     if (!response.ok) {
-      throw new Error("Something went wrong");
+      const errorResponseData = await response.json();
+      const errorId = errorResponseData.error.message;
+
+      let message;
+
+      switch (errorId) {
+        case "EMAIL_EXISTS":
+          message = "This email already registered.";
+          throw new Error(message);
+        case "OPERATION_NOT_ALLOWED":
+          message = "Authentication disabled.";
+          throw new Error(message);
+        case "TOO_MANY_ATTEMPTS_TRY_LATER":
+          message = "Too many attempts in a short time. Try later.";
+          throw new Error(message);
+        default:
+          message = "Something went wrong";
+          throw new Error(message);
+      }
     }
 
     const responseData = await response.json();

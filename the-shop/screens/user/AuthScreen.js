@@ -1,5 +1,7 @@
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   Button,
   KeyboardAvoidingView,
   ScrollView,
@@ -47,6 +49,8 @@ const formReducer = (state, action) => {
 };
 
 export const AuthScreen = props => {
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
 
   const dispatch = useDispatch();
@@ -63,7 +67,13 @@ export const AuthScreen = props => {
     formIsValid: false
   });
 
-  const authHandler = () => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  const authHandler = async () => {
     let action;
 
     if (isSignup) {
@@ -78,7 +88,14 @@ export const AuthScreen = props => {
       );
     }
 
-    dispatch(action);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const inputChangeHandler = useCallback(
@@ -133,11 +150,15 @@ export const AuthScreen = props => {
               />
             </View>
             <View style={styles.buttonContainer}>
-              <Button
-                title={isSignup ? "Switch to Login" : "Switch to Sign Up"}
-                color={Colors.accent}
-                onPress={() => setIsSignup(isSignup => !isSignup)}
-              />
+              {isLoading ? (
+                <ActivityIndicator size="small" color={Colors.primary} />
+              ) : (
+                <Button
+                  title={isSignup ? "Switch to Login" : "Switch to Sign Up"}
+                  color={Colors.accent}
+                  onPress={() => setIsSignup(isSignup => !isSignup)}
+                />
+              )}
             </View>
           </ScrollView>
         </Card>
