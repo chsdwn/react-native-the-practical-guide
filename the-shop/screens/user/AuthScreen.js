@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useState } from "react";
 import {
   Button,
   KeyboardAvoidingView,
@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 
-import { signup } from "../../store/actions/auth";
+import { login, signup } from "../../store/actions/auth";
 
 import { Card } from "../../components/UI/Card";
 import { Input } from "../../components/UI/Input";
@@ -47,6 +47,8 @@ const formReducer = (state, action) => {
 };
 
 export const AuthScreen = props => {
+  const [isSignup, setIsSignup] = useState(false);
+
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -61,10 +63,22 @@ export const AuthScreen = props => {
     formIsValid: false
   });
 
-  const signupHandler = () => {
-    dispatch(
-      signup(formState.inputValues.email, formState.inputValues.password)
-    );
+  const authHandler = () => {
+    let action;
+
+    if (isSignup) {
+      action = signup(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    } else {
+      action = login(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    }
+
+    dispatch(action);
   };
 
   const inputChangeHandler = useCallback(
@@ -113,16 +127,16 @@ export const AuthScreen = props => {
             />
             <View style={styles.buttonContainer}>
               <Button
-                title="Login"
+                title={isSignup ? "Signup" : "Login"}
                 color={Colors.primary}
-                onPress={signupHandler}
+                onPress={authHandler}
               />
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title="Switch to Sign Up"
+                title={isSignup ? "Switch to Login" : "Switch to Sign Up"}
                 color={Colors.accent}
-                onPress={() => {}}
+                onPress={() => setIsSignup(isSignup => !isSignup)}
               />
             </View>
           </ScrollView>
