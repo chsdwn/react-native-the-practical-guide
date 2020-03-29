@@ -1,18 +1,35 @@
 import React from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { FlatList, Platform, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import { CustomHeaderButton } from "../components/HeaderButton";
+import { PlaceItem } from "../components/PlaceItem";
 
-export const PlacesListScreen = (props) => {
+export const PlacesListScreen = props => {
+  const places = useSelector(state => state.places.places);
+
   return (
-    <View>
-      <Text>Places List</Text>
-    </View>
+    <FlatList
+      data={places}
+      renderItem={itemData => (
+        <PlaceItem
+          onSelect={() =>
+            props.navigation.navigate("PlaceDetail", {
+              placeId: itemData.item.id,
+              placeTitle: itemData.item.title
+            })
+          }
+          image={null}
+          title={itemData.item.title}
+          address={null}
+        />
+      )}
+    />
   );
 };
 
-PlacesListScreen.navigationOptions = (navData) => {
+PlacesListScreen.navigationOptions = navData => {
   return {
     headerTitle: "All Places",
     headerRight: () => (
@@ -23,7 +40,7 @@ PlacesListScreen.navigationOptions = (navData) => {
           onPress={() => navData.navigation.navigate("NewPlace")}
         />
       </HeaderButtons>
-    ),
+    )
   };
 };
 

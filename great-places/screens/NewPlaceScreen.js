@@ -5,19 +5,28 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
+  View
 } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { addPlace } from "../store/places-actions";
 
 import Colors from "../constants/Colors";
 
-export const NewPlaceScreen = (props) => {
+export const NewPlaceScreen = props => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
 
-  const titleChangeHandler = (text) => {
+  const titleChangeHandler = text => {
     setTitle(text);
   };
 
-  const savePlaceHandler = () => {};
+  const savePlaceHandler = () => {
+    console.log(title);
+    dispatch(addPlace(title));
+    props.navigation.goBack();
+  };
 
   return (
     <ScrollView>
@@ -26,7 +35,7 @@ export const NewPlaceScreen = (props) => {
         <TextInput
           style={styles.textInput}
           value={title}
-          onChange={titleChangeHandler}
+          onChangeText={titleChangeHandler}
         />
         <Button
           title="Save Place"
@@ -39,22 +48,22 @@ export const NewPlaceScreen = (props) => {
 };
 
 NewPlaceScreen.navigationOptions = {
-  headerTitle: "Add Place",
+  headerTitle: "Add Place"
 };
 
 const styles = StyleSheet.create({
   form: {
-    margin: 30,
+    margin: 30
   },
   label: {
     fontSize: 18,
-    marginBottom: 15,
+    marginBottom: 15
   },
   textInput: {
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     marginBottom: 15,
     paddingVertical: 4,
-    paddingHorizontal: 2,
-  },
+    paddingHorizontal: 2
+  }
 });
