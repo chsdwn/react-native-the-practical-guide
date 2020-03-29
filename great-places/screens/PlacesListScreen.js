@@ -20,7 +20,7 @@ export const PlacesListScreen = props => {
               placeTitle: itemData.item.title
             })
           }
-          image={null}
+          image={itemData.item.imageUri}
           title={itemData.item.title}
           address={null}
         />
