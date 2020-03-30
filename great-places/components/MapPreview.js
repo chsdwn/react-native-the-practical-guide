@@ -1,8 +1,8 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { GOOGLE_MAPS_API_KEY } from "../constants/ApiKey";
 
-export const MapPreview = ({ children, location, style }) => {
+export const MapPreview = ({ children, location, onPress, style }) => {
   let imagePreviewUrl;
 
   if (location) {
@@ -15,13 +15,16 @@ export const MapPreview = ({ children, location, style }) => {
   }
 
   return (
-    <View style={{ ...styles.mapPreview, ...style }}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ ...styles.mapPreview, ...style }}
+    >
       {location ? (
         <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }} />
       ) : (
         children
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
