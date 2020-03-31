@@ -13,7 +13,7 @@ export const addPlace = (title, image, location) => {
         `key=${GOOGLE_MAPS_API_KEY}`
     );
 
-    if (!response.ok()) {
+    if (!response.ok) {
       throw new Error("Something went wrong");
     }
 
@@ -22,10 +22,9 @@ export const addPlace = (title, image, location) => {
       throw new Error("Something went wrong");
     }
 
-    const address = responseData.results[0].formatted_address;
-
     const fileName = image.split("/").pop();
     const newPath = FileSystem.documentDirectory + fileName;
+    const address = responseData.results[0].formatted_address;
 
     try {
       await FileSystem.moveAsync({
