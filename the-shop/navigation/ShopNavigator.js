@@ -26,7 +26,7 @@ import {
   ProductsOverviewScreen,
   screenOptions as productOverviewScreenOptions
 } from "../screens/shop/ProductsOverviewScreen";
-import { AuthScreen } from "../screens/user/AuthScreen";
+import { AuthScreen, authScreenOptions } from "../screens/user/AuthScreen";
 import {
   EditProductScreen,
   editProductScreenOptions
@@ -54,7 +54,7 @@ const defaultNavOptions = {
 };
 
 const ProductsStackNavigator = createStackNavigator();
-export const ProductsNavigator = () => {
+const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
@@ -77,7 +77,7 @@ export const ProductsNavigator = () => {
 };
 
 const OrdersStackNavigator = createStackNavigator();
-export const OrdersNavigator = () => {
+const OrdersNavigator = () => {
   return (
     <OrdersStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <OrdersStackNavigator.Screen
@@ -172,17 +172,15 @@ export const ShopNavigator = () => {
   );
 };
 
-// const AuthNavigator = createStackNavigator(
-//   {
-//     Auth: AuthScreen
-//   },
-//   { defaultNavigationOptions: defaultNavOptions }
-// );
-
-// export const MainNavigator = createAppContainer(
-//   createSwitchNavigator({
-//     Startup: StartupScreen,
-//     Auth: AuthNavigator,
-//     Shop: ShopNavigator
-//   })
-// );
+const AuthStackNavigator = createStackNavigator();
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <AuthStackNavigator.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={authScreenOptions}
+      />
+    </AuthStackNavigator.Navigator>
+  );
+};

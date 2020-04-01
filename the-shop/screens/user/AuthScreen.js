@@ -167,7 +167,7 @@ export const AuthScreen = props => {
   );
 };
 
-AuthScreen.navigationOptions = {
+export const authScreenOptions = {
   headerTitle: "Authenticate"
 };
 

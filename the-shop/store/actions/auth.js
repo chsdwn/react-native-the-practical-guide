@@ -4,6 +4,7 @@ import { FIREBASE_APIKEY } from "../../constants/ApiKey";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
+export const SET_DID_TRY_AUTO_LOGIN = "SET_DID_TRY_AUTO_LOGIN";
 
 let timer;
 
@@ -82,6 +83,10 @@ export const logout = () => {
     await AsyncStorage.removeItem("userData");
     dispatch({ type: LOGOUT });
   };
+};
+
+export const setDidTryAutoLogin = () => {
+  return { type: SET_DID_TRY_AUTO_LOGIN };
 };
 
 export const signup = (email, password) => {

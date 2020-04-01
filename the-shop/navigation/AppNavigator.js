@@ -2,18 +2,19 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
-import {
-  AdminNavigator,
-  OrdersNavigator,
-  ProductsNavigator
-} from "./ShopNavigator";
+import { AuthNavigator, ShopNavigator } from "./ShopNavigator";
+
+import { StartupScreen } from "../screens/StartupScreen";
 
 export const AppNavigator = props => {
   const isAuth = useSelector(state => !!state.auth.token);
+  const didTryAutoLogin = useSelector(state => state.auth.didTryAutoLogin);
 
   return (
     <NavigationContainer>
-      <ProductsNavigator />
+      {isAuth && <ShopNavigator />}
+      {!isAuth && didTryAutoLogin && <AuthNavigator />}
+      {!isAuth && !didTryAutoLogin && <StartupScreen />}
     </NavigationContainer>
   );
 };
