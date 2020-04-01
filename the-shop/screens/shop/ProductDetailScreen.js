@@ -16,7 +16,7 @@ import Colors from "../../constants/Colors";
 export const ProductDetailScreen = props => {
   const dispatch = useDispatch();
 
-  const productId = props.navigation.getParam("productId");
+  const productId = props.route.params.productId;
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(product => product.id === productId)
   );
@@ -41,7 +41,7 @@ export const ProductDetailScreen = props => {
 
 export const screenOptions = navData => {
   return {
-    headerTitle: navData.navigation.getParam("productTitle")
+    headerTitle: navData.route.params.productTitle
   };
 };
 
